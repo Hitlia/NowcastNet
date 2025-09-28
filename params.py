@@ -3,7 +3,7 @@ import argparse
 def get_args():
     parser = argparse.ArgumentParser('NowcastNet', add_help=False)
     # data params
-    parser.add_argument('--data_path', type=str, default='/data/lxy/data/NJU-CPOL')
+    parser.add_argument('--data_path', type=str, default='/data/NJU-CPOL')
     parser.add_argument('--input_data_type', type=str, default='float32')
     
     # model params
