@@ -1,4 +1,5 @@
 import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '1,2'
 import torch
 import glob
 from tqdm import tqdm
@@ -337,7 +338,7 @@ def train_one_epoch(epoch, args, train_loader, conv_merge, generator, discrimina
         train_pool_loss += loss_pool.item()
         train_count += 1
         
-        if batch_id % 10 == 0:
+        if batch_id % 80 == 0:
             with open(args.gen_frm_dir + '/log.output','a') as file:
                 print("Epoch:{},Batch:{}".format(epoch,batch_id),file=file)
                 print("train_evo_loss:{},train_disc_loss:{},train_gen_loss:{},train_adv_loss:{},train_pool_loss:{}".format(
@@ -367,7 +368,8 @@ def train(args):
     # 创建输出文件夹（若已存在则删除重建）
     args.gen_frm_dir = os.path.join(args.gen_frm_dir, args.experiment)
     if os.path.exists(args.gen_frm_dir):
-        shutil.rmtree(args.gen_frm_dir)
+        args.gen_frm_dir = args.gen_frm_dir + "_new"
+        # shutil.rmtree(args.gen_frm_dir)
     os.makedirs(args.gen_frm_dir)
     
     result_dir = os.path.join(args.gen_frm_dir, 'Result')
@@ -379,7 +381,7 @@ def train(args):
 
     # model
     print('>>> 初始化并加载模型 ...')
-    conv_merge = nn.Conv3d(in_channels=3, out_channels=1, kernel_size=1)
+    conv_merge = nn.Conv3d(in_channels=3, out_channels=1, kernel_size=1).to(args.device)
     generator = NowcastNet(args).to(args.device)
     discriminator = Temporal_Discriminator(args).to(args.device)
         
@@ -446,7 +448,8 @@ def train(args):
         vali_losses.append(vali_losses_epoch)
         
         # 存储checkpoints
-        ckpt_path = os.path.join(args.checkpoint_path, f"ckpt_epoch{epoch:03d}.pth")
+        checkpoint_dir = os.path.join(args.checkpoint_path, args.experiment)
+        ckpt_path = os.path.join(checkpoint_dir, f"ckpt_epoch{epoch:03d}.pth")
         torch.save({
             'epoch': epoch,
             'train_losses': train_losses,

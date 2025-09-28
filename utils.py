@@ -6,8 +6,8 @@ import torch.nn as nn
 def make_grid(input):
     B, C, H, W = input.size()
     # mesh grid
-    xx = torch.arange(0, W).view(1, -1).repeat(H, 1)#.cuda()
-    yy = torch.arange(0, H).view(-1, 1).repeat(1, W)#.cuda()
+    xx = torch.arange(0, W).view(1, -1).repeat(H, 1).cuda()
+    yy = torch.arange(0, H).view(-1, 1).repeat(1, W).cuda()
     xx = xx.view(1, 1, H, W).repeat(B, 1, 1, 1)
     yy = yy.view(1, 1, H, W).repeat(B, 1, 1, 1)
     grid = torch.cat((xx, yy), 1).float()

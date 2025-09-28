@@ -112,17 +112,17 @@ def make_dataloaders(configs,splits=['train','vali','test']):
     if 'train' in splits:
         train_dataset = SinaDataset(configs,'train')
         train_loader = DataLoader(train_dataset,batch_size=configs.batch_size,
-                                shuffle=False,num_workers=configs.cpu_worker,drop_last=True,pin_memory=True)
+                                shuffle=False,num_workers=configs.cpu_worker,drop_last=True)
         dataloaders.append(train_loader)
     if 'vali' in splits:
         vali_dataset = SinaDataset(configs,'vali')
         vali_loader = DataLoader(vali_dataset,batch_size=configs.batch_size,
-                                shuffle=False,num_workers=configs.cpu_worker,drop_last=True,pin_memory=True)
+                                shuffle=False,num_workers=configs.cpu_worker,drop_last=True)
         dataloaders.append(vali_loader)
     if 'test' in splits:
         test_dataset = SinaDataset(configs,'test')
         test_loader = DataLoader(test_dataset,batch_size=configs.batch_size,
-                                shuffle=False,num_workers=configs.cpu_worker,drop_last=True,pin_memory=True)
+                                shuffle=False,num_workers=configs.cpu_worker,drop_last=True)
         dataloaders.append(test_loader)
     return dataloaders
 

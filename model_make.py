@@ -58,7 +58,7 @@ class NowcastNet(nn.Module):
         evo_feature = self.gen_enc(torch.cat([input_frames, evo_result], dim=1))
         # evo_feature = self.gen_enc(input_frames)
 
-        noise = torch.randn(batch, self.configs.ngf, height // 32, width // 32)#.cuda()
+        noise = torch.randn(batch, self.configs.ngf, height // 32, width // 32).cuda()
         noise_feature = self.proj(noise).reshape(batch, -1, 4, 4, 8, 8).permute(0, 1, 4, 5, 2, 3).reshape(batch, -1, height // 8, width // 8)
 
         feature = torch.cat([evo_feature, noise_feature], dim=1)
